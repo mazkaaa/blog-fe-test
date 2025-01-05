@@ -1,21 +1,45 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IPostResponse } from "../../interfaces";
+import { IModalForm, IPostResponse } from "../../interfaces";
 import { PostCard } from "./post-card";
-import { Button, Input, Select } from "antd";
+import { Button, Input, message, Modal, Select } from "antd";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useAuth } from "@/components/contexts";
 
 interface PROPS {
   posts: IPostResponse[];
-}
-export const PostList = (props: PROPS) => {
-  const [filter, setFilter] = useState<{
+  filter: {
     search: string;
     sort: "title" | "body" | undefined;
-  }>({
-    search: "",
-    sort: undefined,
-  });
-
+  };
+  setFilter: React.Dispatch<
+    React.SetStateAction<{
+      search: string;
+      sort: "title" | "body" | undefined;
+    }>
+  >;
+}
+export const PostList = ({ filter, setFilter, posts }: PROPS) => {
   const [search, setSearch] = useState("");
+  const [modalForm, setModalForm] = useState<IModalForm>({
+    isOpen: false,
+    type: "add",
+  });
+  const [modal, modalContext] = Modal.useModal();
+  const [messageApi, messageContext] = message.useMessage();
+  const { authData } = useAuth();
+
+  const queryClient = useQueryClient();
+
+  const { mutate: deletePost, isPending: isDeletePending } = useMutation({
+    mutationFn: async (id: number) => {
+      await axios.delete(process.env.NEXT_PUBLIC_API_URL + `/posts/${id}`, {
+        headers: {
+          Authorization: `Bearer ${authData?.token}`,
+        },
+      });
+    },
+  });
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -23,7 +47,7 @@ export const PostList = (props: PROPS) => {
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [search]);
+  }, [search, setFilter]);
 
   return (
     <div className="space-y-6">
@@ -50,37 +74,50 @@ export const PostList = (props: PROPS) => {
           }}
           className="col-span-1"
         />
-        <Button type="primary" size="large" className="col-span-3">
+        <Button
+          onClick={() => {
+            setModalForm({
+              isOpen: true,
+              type: "add",
+            });
+          }}
+          type="primary"
+          size="large"
+          className="col-span-3"
+        >
           Create post
         </Button>
       </section>
       <section className="space-y-4">
-        {props.posts
-          .filter((item) => {
-            if (filter.search) {
-              if (filter.sort === "title") {
-                return item.title
-                  .toLowerCase()
-                  .includes(filter.search.toLowerCase());
-              }
-              if (filter.sort === "body") {
-                return item.body
-                  .toLowerCase()
-                  .includes(filter.search.toLowerCase());
-              }
-              return (
-                item.title
-                  .toLowerCase()
-                  .includes(filter.search.toLowerCase()) ||
-                item.body.toLowerCase().includes(filter.search.toLowerCase())
-              );
-            }
-            return true;
-          })
-          .map((post, index) => (
-            <PostCard {...post} key={index} />
-          ))}
+        {posts.map((post, index) => (
+          <PostCard
+            {...post}
+            onClickDelete={async (id) => {
+              modal.confirm({
+                title: "Are you sure you want to delete this post?",
+                content: "This action cannot be undone",
+                onOk: () => {
+                  deletePost(id, {
+                    onSuccess: () => {
+                      message.success("Post deleted successfully");
+                      queryClient.invalidateQueries({ queryKey: ["posts"] });
+                    },
+                    onError: (err: any) => {
+                      message.error(
+                        err?.response?.data?.message || "Failed to delete post"
+                      );
+                    },
+                  });
+                },
+              });
+            }}
+            onClickEdit={(id, title, body, user_id) => {}}
+            key={index}
+          />
+        ))}
       </section>
+      {modalContext}
+      {messageContext}
     </div>
   );
 };

@@ -1,5 +1,7 @@
 import { IModalForm } from "@/components/interfaces";
+import { useQuery } from "@tanstack/react-query";
 import { Button, Form, FormProps, Input, Modal } from "antd";
+import axios from "axios";
 import React from "react";
 
 interface PROPS extends IModalForm {}
@@ -11,6 +13,13 @@ type FieldType = {
 export const ModalForm = ({ isOpen, type }: PROPS) => {
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {};
 
+  const {} = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const res = await axios.get(process.env.NEXT_PUBLIC_API_URL + "/users");
+    },
+  });
+
   return (
     <Modal
       footer={[]}
@@ -18,12 +27,6 @@ export const ModalForm = ({ isOpen, type }: PROPS) => {
       open={isOpen}
     >
       <div className="space-y-4">
-        <section>
-          <p>
-            Welcome to our blog. You need to sign in before you can use the
-            blog.
-          </p>
-        </section>
         <section>
           <Form name="basic" onFinish={onFinish} autoComplete="off">
             <Form.Item<FieldType>

@@ -6,6 +6,14 @@ import axios from "axios";
 import { Button, Pagination, Select, Spin } from "antd";
 
 export const PostSection = () => {
+  const [filter, setFilter] = useState<{
+    search: string;
+    sort: "title" | "body" | undefined;
+  }>({
+    search: "",
+    sort: undefined,
+  });
+
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 5,
@@ -18,14 +26,21 @@ export const PostSection = () => {
         params: {
           page: pagination.page,
           per_page: pagination.limit,
+          [filter.sort === "title" ? "title" : "body"]: filter.search,
         },
       }
     );
     return response.data as IPostResponse[];
-  }, [pagination.limit, pagination.page]);
+  }, [filter.search, filter.sort, pagination.limit, pagination.page]);
 
   const { data, isPending, isError } = useQuery({
-    queryKey: ["posts", pagination.limit, pagination.page],
+    queryKey: [
+      "posts",
+      pagination.limit,
+      pagination.page,
+      filter.search,
+      filter.sort,
+    ],
     queryFn: async () => fetchData(),
     placeholderData: keepPreviousData,
   });
@@ -39,23 +54,25 @@ export const PostSection = () => {
     }
     return (
       <>
-        <PostList posts={data} />
-        <section className="flex justify-center">
-          <Button
-            loading={isPending}
-            onClick={() => {
-              setPagination((prev) => ({ ...prev, limit: prev.limit + 5 }));
-            }}
-            size="large"
-            className="w-full"
-            type="dashed"
-          >
-            Load more
-          </Button>
-        </section>
+        <PostList filter={filter} setFilter={setFilter} posts={data} />
+        {data.length > 0 ? (
+          <section className="flex justify-center">
+            <Button
+              loading={isPending}
+              onClick={() => {
+                setPagination((prev) => ({ ...prev, limit: prev.limit + 5 }));
+              }}
+              size="large"
+              className="w-full"
+              type="dashed"
+            >
+              Load more
+            </Button>
+          </section>
+        ) : null}
       </>
     );
-  }, [data, isError, isPending]);
+  }, [data, filter, isError, isPending]);
 
   return <div className="space-y-6">{defineContent}</div>;
 };
