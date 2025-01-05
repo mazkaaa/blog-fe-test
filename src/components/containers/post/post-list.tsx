@@ -5,6 +5,7 @@ import { Button, Input, message, Modal, Select } from "antd";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useAuth } from "@/components/contexts";
+import { ModalForm } from "./modal-form";
 
 interface PROPS {
   posts: IPostResponse[];
@@ -21,12 +22,12 @@ interface PROPS {
 }
 export const PostList = ({ filter, setFilter, posts }: PROPS) => {
   const [search, setSearch] = useState("");
-  const [modalForm, setModalForm] = useState<IModalForm>({
+  const [modalForm, setModalForm] = useState<IModalForm<IPostResponse>>({
     isOpen: false,
     type: "add",
+    selectedData: undefined,
   });
   const [modal, modalContext] = Modal.useModal();
-  const [messageApi, messageContext] = message.useMessage();
   const { authData } = useAuth();
 
   const queryClient = useQueryClient();
@@ -51,7 +52,7 @@ export const PostList = ({ filter, setFilter, posts }: PROPS) => {
 
   return (
     <div className="space-y-6">
-      <section className="grid grid-cols-3 gap-4">
+      <section className="grid grid-cols-12 gap-4">
         <Input
           value={search}
           onChange={(e) => {
@@ -59,7 +60,7 @@ export const PostList = ({ filter, setFilter, posts }: PROPS) => {
           }}
           size="large"
           placeholder="Search post..."
-          className="col-span-2"
+          className="col-span-8 md:col-span-6 lg:col-span-4 xl:col-span-2"
         />
         <Select
           size="large"
@@ -72,7 +73,7 @@ export const PostList = ({ filter, setFilter, posts }: PROPS) => {
           onChange={(value) => {
             setFilter((prev) => ({ ...prev, sort: value }));
           }}
-          className="col-span-1"
+          className="col-span-4 md:col-span-3 lg:col-span-2 xl:col-span-1"
         />
         <Button
           onClick={() => {
@@ -83,7 +84,7 @@ export const PostList = ({ filter, setFilter, posts }: PROPS) => {
           }}
           type="primary"
           size="large"
-          className="col-span-3"
+          className="col-span-full md:col-span-3 md:col-end-13 lg:col-span-2 lg:col-end-13 xl:col-span-1 xl:col-end-13"
         >
           Create post
         </Button>
@@ -111,13 +112,29 @@ export const PostList = ({ filter, setFilter, posts }: PROPS) => {
                 },
               });
             }}
-            onClickEdit={(id, title, body, user_id) => {}}
+            onClickEdit={(id, title, body, user_id) => {
+              setModalForm({
+                isOpen: true,
+                type: "edit",
+                selectedData: {
+                  id,
+                  title,
+                  body,
+                  user_id,
+                },
+              });
+            }}
             key={index}
           />
         ))}
       </section>
       {modalContext}
-      {messageContext}
+      <ModalForm
+        {...modalForm}
+        setOpen={(open) => {
+          setModalForm((prev) => ({ ...prev, isOpen: open }));
+        }}
+      />
     </div>
   );
 };

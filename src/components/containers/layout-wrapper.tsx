@@ -2,13 +2,17 @@ import React, { useMemo } from "react";
 import { Header } from "./header";
 import { Inter } from "next/font/google";
 import { useAuth } from "../contexts";
+import { Layout } from "antd";
 
 interface PROPS {
   children?: React.ReactNode;
+  theme: "Light" | "Dark";
+  setTheme: (theme: "Light" | "Dark") => void;
 }
 const inter = Inter({ subsets: ["latin"] });
-export const Layout = (props: PROPS) => {
+export const LayoutWrapper = (props: PROPS) => {
   const { authData, status } = useAuth();
+  const { Content } = Layout;
 
   const defineStatus = useMemo(() => {
     if (status === "pending") {
@@ -21,9 +25,15 @@ export const Layout = (props: PROPS) => {
   }, [authData?.name, status]);
 
   return (
-    <div className={`${inter.className} p-6`}>
-      <Header name={defineStatus} />
-      <main className="pt-[5rem]">{props.children}</main>
-    </div>
+    <Layout className={`${inter.className} px-6 xl:px-12 py-4 h-full`}>
+      <Header
+        name={defineStatus}
+        theme={props.theme}
+        setTheme={props.setTheme}
+      />
+      <Content className="py-[5rem] h-full md:px-[6rem]">
+        {props.children}
+      </Content>
+    </Layout>
   );
 };

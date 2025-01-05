@@ -55,7 +55,7 @@ export const PostSection = () => {
     return (
       <>
         <PostList filter={filter} setFilter={setFilter} posts={data} />
-        {data.length > 0 ? (
+        {data.length > 4 ? (
           <section className="flex justify-center">
             <Button
               loading={isPending}

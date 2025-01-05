@@ -6,7 +6,7 @@ export default function Home() {
   const { status, setupLogin, authData } = useAuth();
 
   return (
-    <div className="relative">
+    <div>
       <PostSection />
       <ModalWelcome
         onLogin={(data) => setupLogin(data)}

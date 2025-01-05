@@ -24,10 +24,13 @@ export const PostCard = ({
     <article className="flex flex-col border border-zinc-300 rounded-lg p-4 space-y-4">
       <section className="space-y-2">
         <h3 className="font-semibold text-lg">{title}</h3>
-        <p>{body.length > 100 ? `${body.slice(0, 100)}...` : body}</p>
+        <p>{body.length > 100 ? `${body.slice(0, 300)}...` : body}</p>
       </section>
-      <section className="grid grid-cols-5 gap-2">
-        <Link className="col-span-3" href={`/post/${id}`}>
+      <section className="grid grid-cols-12 gap-2">
+        <Link
+          className="col-span-8 md:col-span-6 lg:col-span-4 xl:col-span-2"
+          href={`/post/${id}`}
+        >
           <Button className="w-full" type="primary">
             Read more
           </Button>
@@ -36,7 +39,7 @@ export const PostCard = ({
           onClick={() => {
             onClickEdit(id, title, body, user_id);
           }}
-          className="col-span-1"
+          className="col-span-2 md:col-end-11 lg:col-span-2 lg:col-end-11 xl:col-span-1 xl:col-end-12"
           type="default"
         >
           <svg
@@ -58,7 +61,7 @@ export const PostCard = ({
           onClick={() => {
             onClickDelete(id);
           }}
-          className="col-span-1"
+          className="col-span-2 md:col-end-13 lg:col-span-2 lg:col-end-13 xl:col-span-1 xl:col-end-13"
           type="default"
         >
           <svg

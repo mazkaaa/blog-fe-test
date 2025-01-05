@@ -4,7 +4,8 @@ export interface IModalRes {
   message: string;
 }
 
-export interface IModalForm {
+export interface IModalForm<T = any> {
   isOpen: boolean;
   type: "add" | "edit";
+  selectedData?: T;
 }
