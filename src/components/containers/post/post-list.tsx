@@ -89,7 +89,7 @@ export const PostList = ({ filter, setFilter, posts }: PROPS) => {
           Create post
         </Button>
       </section>
-      <section className="space-y-4">
+      <section id="article_list" className="space-y-4">
         {posts.map((post, index) => (
           <PostCard
             {...post}

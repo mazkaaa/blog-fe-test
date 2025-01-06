@@ -21,7 +21,10 @@ export const PostCard = ({
   onClickDelete,
 }: PROPS) => {
   return (
-    <article className="flex flex-col border border-zinc-300 rounded-lg p-4 space-y-4">
+    <article
+      id={id.toString()}
+      className="flex flex-col border border-zinc-300 rounded-lg p-4 space-y-4"
+    >
       <section className="space-y-2">
         <h3 className="font-semibold text-lg">{title}</h3>
         <p>{body.length > 100 ? `${body.slice(0, 300)}...` : body}</p>
@@ -36,6 +39,7 @@ export const PostCard = ({
           </Button>
         </Link>
         <Button
+          id="post_edit"
           onClick={() => {
             onClickEdit(id, title, body, user_id);
           }}
@@ -58,6 +62,7 @@ export const PostCard = ({
           </svg>
         </Button>
         <Button
+          id="post_delete"
           onClick={() => {
             onClickDelete(id);
           }}
