@@ -11,7 +11,7 @@ describe('Post Create Flow', () => {
 
     cy.intercept('GET', 'https://gorest.co.in/public/v2/users').as('getUsers');
 
-    cy.visit('http://localhost:3000');
+    cy.visit('/');
     cy.contains(
       'Welcome to our blog. You need to sign in before you can use the blog.',
     ).should('be.visible');

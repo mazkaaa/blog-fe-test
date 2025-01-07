@@ -13,7 +13,7 @@ describe('Post Edit Flow', () => {
       },
     }).as('editPost');
 
-    cy.visit('http://localhost:3000');
+    cy.visit('/');
     cy.contains(
       'Welcome to our blog. You need to sign in before you can use the blog.',
     ).should('be.visible');

@@ -10,6 +10,7 @@
     "format": "prettier --write .",
     "cypress:open": "cypress open",
     "test": "cypress run",
+    "test:ci": "start-server-and-test dev http://localhost:3000 test",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -23,7 +24,8 @@
     "cypress": "^13.17.0",
     "next": "13.5.8",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "start-server-and-test": "^2.0.9"
   },
   "devDependencies": {
     "@types/node": "^20",

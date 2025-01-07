@@ -4,7 +4,7 @@ describe('Post list flow', () => {
       'GET',
       'https://gorest.co.in/public/v2/posts?page=1&per_page=5&body=*',
     ).as('getPosts');
-    cy.visit('http://localhost:3000');
+    cy.visit('/');
     cy.contains(
       'Welcome to our blog. You need to sign in before you can use the blog.',
     ).should('be.visible');
@@ -41,7 +41,7 @@ describe('Post list flow', () => {
       'GET',
       'https://gorest.co.in/public/v2/posts?page=1&per_page=10&body=*',
     ).as('getPosts2');
-    cy.visit('http://localhost:3000');
+    cy.visit('/');
     cy.contains(
       'Welcome to our blog. You need to sign in before you can use the blog.',
     ).should('be.visible');
