@@ -57,4 +57,3 @@ This project is licensed under the MIT License.
 ## Live URL
 
 The live application can be accessed at: https://blog-fe-test.vercel.app
-
