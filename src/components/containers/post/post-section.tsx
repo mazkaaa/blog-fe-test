@@ -1,16 +1,16 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { PostList } from "./post-list";
-import { IPostResponse } from "../../interfaces";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { Button, Pagination, Select, Spin } from "antd";
+import React, { useCallback, useMemo, useState } from 'react';
+import { PostList } from './post-list';
+import { IPostResponse } from '../../interfaces';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { Button, Pagination, Select, Spin } from 'antd';
 
 export const PostSection = () => {
   const [filter, setFilter] = useState<{
     search: string;
-    sort: "title" | "body" | undefined;
+    sort: 'title' | 'body' | undefined;
   }>({
-    search: "",
+    search: '',
     sort: undefined,
   });
 
@@ -21,21 +21,21 @@ export const PostSection = () => {
 
   const fetchData = useCallback(async () => {
     const response = await axios.get(
-      process.env.NEXT_PUBLIC_API_URL + "/posts",
+      process.env.NEXT_PUBLIC_API_URL + '/posts',
       {
         params: {
           page: pagination.page,
           per_page: pagination.limit,
-          [filter.sort === "title" ? "title" : "body"]: filter.search,
+          [filter.sort === 'title' ? 'title' : 'body']: filter.search,
         },
-      }
+      },
     );
     return response.data as IPostResponse[];
   }, [filter.search, filter.sort, pagination.limit, pagination.page]);
 
   const { data, isPending, isError } = useQuery({
     queryKey: [
-      "posts",
+      'posts',
       pagination.limit,
       pagination.page,
       filter.search,

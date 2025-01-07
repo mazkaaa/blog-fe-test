@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface PROPS {
   author: string;
@@ -18,7 +18,7 @@ export const AuthorInformationCard = ({
         Name: <span className="font-medium capitalize">{author}</span>
       </p>
       <p>
-        Email:{" "}
+        Email:{' '}
         <a
           className="font-medium border-dotted border-b border-zinc-900"
           href={`mailto:${email}`}

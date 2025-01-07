@@ -1,6 +1,6 @@
-import { ModalWelcome, PostList } from "@/components/containers";
-import { PostSection } from "@/components/containers/post/post-section";
-import { useAuth } from "@/components/contexts";
+import { ModalWelcome, PostList } from '@/components/containers';
+import { PostSection } from '@/components/containers/post/post-section';
+import { useAuth } from '@/components/contexts';
 
 export default function Home() {
   const { status, setupLogin, authData } = useAuth();
@@ -10,7 +10,7 @@ export default function Home() {
       <PostSection />
       <ModalWelcome
         onLogin={(data) => setupLogin(data)}
-        isOpen={status === "logged-out"}
+        isOpen={status === 'logged-out'}
       />
     </div>
   );

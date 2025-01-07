@@ -1,14 +1,14 @@
-import React from "react";
-import { IPostResponse } from "../../interfaces";
-import { Button } from "antd";
-import Link from "next/link";
+import React from 'react';
+import { IPostResponse } from '../../interfaces';
+import { Button } from 'antd';
+import Link from 'next/link';
 
 interface PROPS extends IPostResponse {
   onClickEdit: (
     id: number,
     title: string,
     body: string,
-    user_id: number
+    user_id: number,
   ) => void;
   onClickDelete: (id: number) => void;
 }

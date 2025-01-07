@@ -1,10 +1,10 @@
-import { Button, Layout, Typography } from "antd";
-import React from "react";
+import { Button, Layout, Typography } from 'antd';
+import React from 'react';
 
 interface PROPS {
   name: string;
-  theme: "Light" | "Dark";
-  setTheme: (theme: "Light" | "Dark") => void;
+  theme: 'Light' | 'Dark';
+  setTheme: (theme: 'Light' | 'Dark') => void;
 }
 export const Header = (props: PROPS) => {
   const { Text, Title, Paragraph } = Typography;
@@ -16,11 +16,11 @@ export const Header = (props: PROPS) => {
         <Text className="text-base text-white">{props.name}</Text>
         <Button
           onClick={() => {
-            props.setTheme(props.theme === "Light" ? "Dark" : "Light");
+            props.setTheme(props.theme === 'Light' ? 'Dark' : 'Light');
           }}
           size="large"
         >
-          {props.theme !== "Light" ? (
+          {props.theme !== 'Light' ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"

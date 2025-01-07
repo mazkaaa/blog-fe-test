@@ -1,27 +1,27 @@
-import React, { useMemo } from "react";
-import { Header } from "./header";
-import { Inter } from "next/font/google";
-import { useAuth } from "../contexts";
-import { Layout } from "antd";
+import React, { useMemo } from 'react';
+import { Header } from './header';
+import { Inter } from 'next/font/google';
+import { useAuth } from '../contexts';
+import { Layout } from 'antd';
 
 interface PROPS {
   children?: React.ReactNode;
-  theme: "Light" | "Dark";
-  setTheme: (theme: "Light" | "Dark") => void;
+  theme: 'Light' | 'Dark';
+  setTheme: (theme: 'Light' | 'Dark') => void;
 }
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 export const LayoutWrapper = (props: PROPS) => {
   const { authData, status } = useAuth();
   const { Content } = Layout;
 
   const defineStatus = useMemo(() => {
-    if (status === "pending") {
-      return "Loading...";
+    if (status === 'pending') {
+      return 'Loading...';
     }
-    if (status === "logged-out") {
-      return "Guest";
+    if (status === 'logged-out') {
+      return 'Guest';
     }
-    return authData?.name || "Guest";
+    return authData?.name || 'Guest';
   }, [authData?.name, status]);
 
   return (

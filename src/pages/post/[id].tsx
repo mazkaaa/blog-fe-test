@@ -1,15 +1,15 @@
-import { PostDetailArticle } from "@/components/containers";
-import { AuthorInformationCard } from "@/components/containers/post/author-information-card";
+import { PostDetailArticle } from '@/components/containers';
+import { AuthorInformationCard } from '@/components/containers/post/author-information-card';
 import {
   IPostCommentResponse,
   IPostResponse,
   IUserResponse,
-} from "@/components/interfaces";
-import { useQuery } from "@tanstack/react-query";
-import { Button, Spin } from "antd";
-import axios from "axios";
-import { useRouter } from "next/router";
-import { useMemo } from "react";
+} from '@/components/interfaces';
+import { useQuery } from '@tanstack/react-query';
+import { Button, Spin } from 'antd';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 
 export default function Page() {
   const router = useRouter();
@@ -21,10 +21,10 @@ export default function Page() {
     isError: postDetailIsError,
     isSuccess: postDetailIsSuccess,
   } = useQuery({
-    queryKey: ["post", id],
+    queryKey: ['post', id],
     queryFn: async () => {
       const response = await axios(
-        `${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`,
       );
       return response.data as IPostResponse;
     },
@@ -37,12 +37,12 @@ export default function Page() {
     isError: userIsError,
     isSuccess: userIsSuccess,
   } = useQuery({
-    queryKey: ["user", postDetailIsSuccess],
+    queryKey: ['user', postDetailIsSuccess],
     queryFn: async () => {
       const response = await axios(
         `${process.env.NEXT_PUBLIC_API_URL}/users/${
           postDetailData?.user_id || 0
-        }`
+        }`,
       );
       return response.data as IUserResponse;
     },
@@ -55,10 +55,10 @@ export default function Page() {
     isError: commentsIsError,
     isSuccess: commentsIsSuccess,
   } = useQuery({
-    queryKey: ["comments", postDetailIsSuccess],
+    queryKey: ['comments', postDetailIsSuccess],
     queryFn: async () => {
       const response = await axios(
-        `${process.env.NEXT_PUBLIC_API_URL}/posts/${id}/comments`
+        `${process.env.NEXT_PUBLIC_API_URL}/posts/${id}/comments`,
       );
       return response.data as IPostCommentResponse[];
     },

@@ -6,6 +6,6 @@ export interface IModalRes {
 
 export interface IModalForm<T = any> {
   isOpen: boolean;
-  type: "add" | "edit";
+  type: 'add' | 'edit';
   selectedData?: T;
 }

@@ -1,5 +1,5 @@
-import { Button, Form, FormProps, Input, Modal } from "antd";
-import React, { useCallback } from "react";
+import { Button, Form, FormProps, Input, Modal } from 'antd';
+import React, { useCallback } from 'react';
 
 interface PROPS {
   isOpen: boolean;
@@ -12,7 +12,7 @@ type FieldType = {
 
 export const ModalWelcome = ({ isOpen, onLogin }: PROPS) => {
   const [form] = Form.useForm();
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
     if (values.name && values.token) {
       onLogin({
         name: values.name,
@@ -57,7 +57,7 @@ export const ModalWelcome = ({ isOpen, onLogin }: PROPS) => {
           <Form.Item<FieldType>
             label="Name"
             name="name"
-            rules={[{ required: true, message: "Please input your name!" }]}
+            rules={[{ required: true, message: 'Please input your name!' }]}
           >
             <Input />
           </Form.Item>
@@ -65,7 +65,7 @@ export const ModalWelcome = ({ isOpen, onLogin }: PROPS) => {
           <Form.Item<FieldType>
             label="Token"
             name="token"
-            rules={[{ required: true, message: "Please input your token!" }]}
+            rules={[{ required: true, message: 'Please input your token!' }]}
           >
             <Input.Password />
           </Form.Item>

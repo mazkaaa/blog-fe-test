@@ -1,30 +1,30 @@
-import React, { useEffect, useRef, useState } from "react";
-import { IModalForm, IPostResponse } from "../../interfaces";
-import { PostCard } from "./post-card";
-import { Button, Input, message, Modal, Select } from "antd";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { useAuth } from "@/components/contexts";
-import { ModalForm } from "./modal-form";
+import React, { useEffect, useRef, useState } from 'react';
+import { IModalForm, IPostResponse } from '../../interfaces';
+import { PostCard } from './post-card';
+import { Button, Input, message, Modal, Select } from 'antd';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { useAuth } from '@/components/contexts';
+import { ModalForm } from './modal-form';
 
 interface PROPS {
   posts: IPostResponse[];
   filter: {
     search: string;
-    sort: "title" | "body" | undefined;
+    sort: 'title' | 'body' | undefined;
   };
   setFilter: React.Dispatch<
     React.SetStateAction<{
       search: string;
-      sort: "title" | "body" | undefined;
+      sort: 'title' | 'body' | undefined;
     }>
   >;
 }
 export const PostList = ({ filter, setFilter, posts }: PROPS) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [modalForm, setModalForm] = useState<IModalForm<IPostResponse>>({
     isOpen: false,
-    type: "add",
+    type: 'add',
     selectedData: undefined,
   });
   const [modal, modalContext] = Modal.useModal();
@@ -65,8 +65,8 @@ export const PostList = ({ filter, setFilter, posts }: PROPS) => {
         <Select
           size="large"
           options={[
-            { label: "Title", value: "title" },
-            { label: "Content", value: "body" },
+            { label: 'Title', value: 'title' },
+            { label: 'Content', value: 'body' },
           ]}
           placeholder="Sort by"
           value={filter.sort}
@@ -79,7 +79,7 @@ export const PostList = ({ filter, setFilter, posts }: PROPS) => {
           onClick={() => {
             setModalForm({
               isOpen: true,
-              type: "add",
+              type: 'add',
             });
           }}
           type="primary"
@@ -95,17 +95,17 @@ export const PostList = ({ filter, setFilter, posts }: PROPS) => {
             {...post}
             onClickDelete={async (id) => {
               modal.confirm({
-                title: "Are you sure you want to delete this post?",
-                content: "This action cannot be undone",
+                title: 'Are you sure you want to delete this post?',
+                content: 'This action cannot be undone',
                 onOk: () => {
                   deletePost(id, {
                     onSuccess: () => {
-                      message.success("Post deleted successfully");
-                      queryClient.invalidateQueries({ queryKey: ["posts"] });
+                      message.success('Post deleted successfully');
+                      queryClient.invalidateQueries({ queryKey: ['posts'] });
                     },
                     onError: (err: any) => {
                       message.error(
-                        err?.response?.data?.message || "Failed to delete post"
+                        err?.response?.data?.message || 'Failed to delete post',
                       );
                     },
                   });
@@ -115,7 +115,7 @@ export const PostList = ({ filter, setFilter, posts }: PROPS) => {
             onClickEdit={(id, title, body, user_id) => {
               setModalForm({
                 isOpen: true,
-                type: "edit",
+                type: 'edit',
                 selectedData: {
                   id,
                   title,

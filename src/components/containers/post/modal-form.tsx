@@ -1,13 +1,13 @@
-import { useAuth } from "@/components/contexts";
+import { useAuth } from '@/components/contexts';
 import {
   IModalForm,
   IPostResponse,
   IUserResponse,
-} from "@/components/interfaces";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Button, Form, FormProps, Input, message, Modal, Select } from "antd";
-import axios from "axios";
-import React, { useEffect } from "react";
+} from '@/components/interfaces';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Button, Form, FormProps, Input, message, Modal, Select } from 'antd';
+import axios from 'axios';
+import React, { useEffect } from 'react';
 
 interface PROPS extends IModalForm {
   setOpen: (open: boolean) => void;
@@ -24,9 +24,9 @@ export const ModalForm = ({ isOpen, type, setOpen, selectedData }: PROPS) => {
   const data = selectedData as IPostResponse;
 
   const { data: usersData } = useQuery({
-    queryKey: ["users"],
+    queryKey: ['users'],
     queryFn: async () => {
-      const res = await axios.get(process.env.NEXT_PUBLIC_API_URL + "/users");
+      const res = await axios.get(process.env.NEXT_PUBLIC_API_URL + '/users');
       return res.data as IUserResponse[];
     },
     enabled: isOpen,
@@ -36,7 +36,7 @@ export const ModalForm = ({ isOpen, type, setOpen, selectedData }: PROPS) => {
 
   const mutationCreate = useMutation({
     mutationFn: async (values: FieldType) => {
-      await axios.post(process.env.NEXT_PUBLIC_API_URL + "/posts", values, {
+      await axios.post(process.env.NEXT_PUBLIC_API_URL + '/posts', values, {
         headers: {
           Authorization: `Bearer ${authData?.token}`,
         },
@@ -44,7 +44,7 @@ export const ModalForm = ({ isOpen, type, setOpen, selectedData }: PROPS) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["posts"],
+        queryKey: ['posts'],
       });
       setOpen(false);
       form.resetFields();
@@ -54,44 +54,44 @@ export const ModalForm = ({ isOpen, type, setOpen, selectedData }: PROPS) => {
   const mutationUpdate = useMutation({
     mutationFn: async (values: FieldType) => {
       await axios.put(
-        process.env.NEXT_PUBLIC_API_URL + "/posts/" + data.id,
+        process.env.NEXT_PUBLIC_API_URL + '/posts/' + data.id,
         values,
         {
           headers: {
             Authorization: `Bearer ${authData?.token}`,
           },
-        }
+        },
       );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["posts"],
+        queryKey: ['posts'],
       });
       setOpen(false);
       form.resetFields();
     },
   });
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    if (type === "add") {
+  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    if (type === 'add') {
       mutationCreate.mutate(values, {
         onSuccess: () => {
-          message.success("Post created successfully");
+          message.success('Post created successfully');
         },
         onError: (err: any) => {
           message.error(
-            err?.response?.data?.message || "Failed to create post"
+            err?.response?.data?.message || 'Failed to create post',
           );
         },
       });
     } else {
       mutationUpdate.mutate(values, {
         onSuccess: () => {
-          message.success("Post updated successfully");
+          message.success('Post updated successfully');
         },
         onError: (err: any) => {
           message.error(
-            err?.response?.data?.message || "Failed to update post"
+            err?.response?.data?.message || 'Failed to update post',
           );
         },
       });
@@ -99,14 +99,14 @@ export const ModalForm = ({ isOpen, type, setOpen, selectedData }: PROPS) => {
   };
 
   useEffect(() => {
-    if (type === "add") {
+    if (type === 'add') {
       form.resetFields();
     } else {
       if (data) {
         console.log(data);
-        form.setFieldValue("title", data.title);
-        form.setFieldValue("body", data.body);
-        form.setFieldValue("user_id", data.user_id);
+        form.setFieldValue('title', data.title);
+        form.setFieldValue('body', data.body);
+        form.setFieldValue('user_id', data.user_id);
       }
     }
   }, [data, form, type]);
@@ -123,7 +123,7 @@ export const ModalForm = ({ isOpen, type, setOpen, selectedData }: PROPS) => {
             form.submit();
           }}
         >
-          {type === "add" ? "Create" : "Update"}
+          {type === 'add' ? 'Create' : 'Update'}
         </Button>,
         <Button
           size="large"
@@ -138,7 +138,7 @@ export const ModalForm = ({ isOpen, type, setOpen, selectedData }: PROPS) => {
           Cancel
         </Button>,
       ]}
-      title={type === "add" ? "Add new post" : "Edit post"}
+      title={type === 'add' ? 'Add new post' : 'Edit post'}
       open={isOpen}
       onCancel={() => {
         if (setOpen) {
@@ -158,11 +158,11 @@ export const ModalForm = ({ isOpen, type, setOpen, selectedData }: PROPS) => {
         rules={[
           {
             required: true,
-            message: "Please input the title!",
+            message: 'Please input the title!',
           },
         ]}
       >
-        <Input value={form.getFieldValue("title")} />
+        <Input value={form.getFieldValue('title')} />
       </Form.Item>
 
       <Form.Item<FieldType>
@@ -171,11 +171,11 @@ export const ModalForm = ({ isOpen, type, setOpen, selectedData }: PROPS) => {
         rules={[
           {
             required: true,
-            message: "Please input the content!",
+            message: 'Please input the content!',
           },
         ]}
       >
-        <Input.TextArea value={form.getFieldValue("body")} />
+        <Input.TextArea value={form.getFieldValue('body')} />
       </Form.Item>
 
       <Form.Item<FieldType>
@@ -184,12 +184,12 @@ export const ModalForm = ({ isOpen, type, setOpen, selectedData }: PROPS) => {
         rules={[
           {
             required: true,
-            message: "Please select the user!",
+            message: 'Please select the user!',
           },
         ]}
       >
         <Select
-          value={form.getFieldValue("user_id")}
+          value={form.getFieldValue('user_id')}
           placeholder="Select a user"
           options={
             usersData?.map((user) => ({
